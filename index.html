@@ -34,6 +34,9 @@
 
     <script src="web/third-party/codemirror/lib/codemirror.js"></script>
     <script src="web/third-party/codemirror/mode/javascript/javascript.js"></script>
+    
+    <script src="web/third-party/codemirror/mode/python/python.js"></script>
+    <script src="web/third-party/codemirror/addon/edit/matchbrackets.js"></script>
 
     <style>
         body {
@@ -310,7 +313,15 @@
 
 <body>
 
-    <div id="about">
+    <div style="line-height: 0">
+        <button class="submit"><strong>Beautify</strong>  <em>(ctrl-enter)</em>
+        </button>
+        <textarea id="source" rows="30" cols="160"></textarea>
+        <button class="submit"><strong>Beautify</strong>  <em>(ctrl-enter)</em>
+        </button>
+    </div>
+    
+        <div id="about">
         <p>
             <a class="self" href="./">Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.</a>
         </p>
@@ -319,7 +330,6 @@
             <br>and we have a command-line version, python library and a <a href="https://npmjs.org/package/js-beautify">node package</a> as well.
         </p>
     </div>
-
 
     <table id="options">
         <tr>
@@ -406,14 +416,6 @@
             </td>
         </tr>
     </table>
-
-    <div style="line-height: 0">
-        <button class="submit"><strong>Beautify JavaScript or HTML</strong>  <em>(ctrl-enter)</em>
-        </button>
-        <textarea id="source" rows="30" cols="160"></textarea>
-        <button class="submit"><strong>Beautify JavaScript or HTML</strong>  <em>(ctrl-enter)</em>
-        </button>
-    </div>
 
     <div class="blurb">
         <div style="float:right;">
@@ -512,11 +514,21 @@
             var textArea = $('#source')[0];
 
             if (the.use_codemirror && typeof CodeMirror !== 'undefined') {
-                the.editor = CodeMirror.fromTextArea(textArea, {
+                /*the.editor = CodeMirror.fromTextArea(textArea, {
                         theme: 'default',
                         lineNumbers: true
-                    });
+                    });*/
+                    
+                the.editor = CodeMirror.fromTextArea(textArea, {
+		    mode: {name: "python",
+			  version: 3,
+			  singleLineStringErrors: false},
+		    lineNumbers: true,
+		    indentUnit: 4,
+		    matchBrackets: true,
+		});
                 the.editor.focus();
+                the.editor.setSize(null, 600);
 
                 the.editor.setValue(default_text);
                 $('.CodeMirror').click(function () {
